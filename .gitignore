@@ -1,0 +1,15 @@
+# Built binaries
+go-test-archive-wrapper
+
+# Example build artifacts
+example/c-harness/*.o
+example/go-test-archive-wrapper
+example/test_archive_entrypoint.go
+example/test-static.a
+example/test-static.h
+example/test-dynamic.so
+example/test-dynamic.h
+example/ctest-static
+example/ctest-dynamic
+example/*.log
+example/test
