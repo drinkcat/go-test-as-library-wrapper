@@ -1,9 +1,9 @@
 # Built binaries
-go-test-archive-wrapper
+go-test-as-library-wrapper
 
 # Example build artifacts
 example/c-harness/*.o
-example/go-test-archive-wrapper
+example/go-test-as-library-wrapper
 example/test_archive_entrypoint.go
 example/test-static.a
 example/test-static.h

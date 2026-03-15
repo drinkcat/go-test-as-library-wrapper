@@ -1,7 +1,7 @@
-// go-test-archive-wrapper generates a test_archive_entrypoint.go file for a Go package,
+// go-test-as-library-wrapper generates a test_archive_entrypoint.go file for a Go package,
 // enabling the package's tests to be built as a C archive or shared library.
 //
-// Usage: go-test-archive-wrapper [directory]
+// Usage: go-test-as-library-wrapper [directory]
 //
 // If directory is omitted, the current directory is used.
 // The generated file is written to test_archive_entrypoint.go in the target directory.

@@ -1,3 +1,3 @@
-module go-test-archive-wrapper
+module go-test-as-library-wrapper
 
 go 1.26
