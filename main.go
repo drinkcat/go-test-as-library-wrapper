@@ -128,7 +128,10 @@ func go_test_main_with_args(argc C.int, argv **C.char) C.int {
 		nil, // TODO: support fuzz targets
 		nil, // TODO: support examples
 	)
+{{/* Call TestMain if it exists, otherwise call m.Run() directly. */}}
 {{- if .HasTestMain}}
+	// Note: This looks somewhat terrible, but replicates what ` + "`go test`" + ` does.
+	// (see output of ` + "`go test -work -c -o test`" + `)
 	TestMain(m)
 	return C.int(reflect.ValueOf(m).Elem().FieldByName("exitCode").Int())
 {{- else}}
