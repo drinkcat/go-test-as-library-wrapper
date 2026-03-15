@@ -1,3 +1,3 @@
-module go-test-as-library-wrapper
+module github.com/drinkcat/go-test-as-library-wrapper
 
 go 1.26
