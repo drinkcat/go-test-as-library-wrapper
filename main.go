@@ -118,9 +118,9 @@ func go_test_main_with_args(argc C.int, argv **C.char) C.int {
 			{Name: "{{.}}", F: {{.}}},
 {{- end}}
 		},
-		nil, // benchmarks
-		nil, // fuzzTargets
-		nil, // examples
+		nil, // TODO: support benchmarks
+		nil, // TODO: support fuzz targets
+		nil, // TODO: support examples
 	)
 {{- if .HasTestMain}}
 	TestMain(m)
@@ -137,12 +137,12 @@ type templateData struct {
 	HasTestMain bool
 }
 
+// TODO: Support build tags (-tags) so that files with //go:build constraints are
+// correctly included or excluded, matching what `go test -tags ...` would see.
 func findTests(dir string) (pkg string, tests []string, hasTestMain bool, err error) {
 	fset := token.NewFileSet()
 	pkgs, err := parser.ParseDir(fset, dir, func(fi os.FileInfo) bool {
-		name := fi.Name()
-		// Only parse test files, exclude the generated entrypoint itself
-		return strings.HasSuffix(name, "_test.go") && name != "test_archive_entrypoint.go"
+		return strings.HasSuffix(fi.Name(), "_test.go")
 	}, 0)
 	if err != nil {
 		return "", nil, false, fmt.Errorf("parsing %s: %w", dir, err)
