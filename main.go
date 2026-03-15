@@ -1,10 +1,10 @@
-// go-test-as-library-wrapper generates a test_archive_entrypoint.go file for a Go package,
+// go-test-as-library-wrapper generates a test_as_library_entrypoint.go file for a Go package,
 // enabling the package's tests to be built as a C archive or shared library.
 //
 // Usage: go-test-as-library-wrapper [directory]
 //
 // If directory is omitted, the current directory is used.
-// The generated file is written to test_archive_entrypoint.go in the target directory.
+// The generated file is written to test_as_library_entrypoint.go in the target directory.
 package main
 
 import (
@@ -199,7 +199,7 @@ func isTestFunc(name string, fn *ast.FuncDecl) bool {
 
 func run() error {
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: %s [directory]\n\nGenerates test_archive_entrypoint.go in the given directory (default: current directory).\n", os.Args[0])
+		fmt.Fprintf(os.Stderr, "Usage: %s [directory]\n\nGenerates test_as_library_entrypoint.go in the given directory (default: current directory).\n", os.Args[0])
 	}
 	flag.Parse()
 
@@ -229,7 +229,7 @@ func run() error {
 		return fmt.Errorf("parsing template: %w", err)
 	}
 
-	outPath := filepath.Join(absDir, "test_archive_entrypoint.go")
+	outPath := filepath.Join(absDir, "test_as_library_entrypoint.go")
 	f, err := os.Create(outPath)
 	if err != nil {
 		return fmt.Errorf("creating %s: %w", outPath, err)
