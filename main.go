@@ -1,3 +1,7 @@
+// Copyright 2026 Nicolas Boichat. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 // go-test-as-library-wrapper generates a test_as_library_entrypoint.go file for a Go package,
 // enabling the package's tests to be built as a C archive or shared library.
 //
@@ -23,6 +27,8 @@ const entrypointTemplate = `// This generated file can be used as a C entry poin
 // library.
 // A more proper solution would require a Go toolchain change, see
 // https://github.com/golang/go/issues/77524 .
+//
+// To regenerate this file, run: go-test-as-library-wrapper .
 //
 // To use this code, build tests as an archive with
 // CGO_ENABLED=1 go test -tags test_archive -buildmode=c-archive -c -o test-static.a
@@ -52,7 +58,7 @@ import (
 	"unsafe"
 )
 
-// HACK: This is an unfortunate copy-paste of code in the Go standard library's testing package.
+// HACK: This is an unfortunate stubbing of code in the Go standard library's testing package.
 // We need this as we hijack the ` + "`MainStart`" + ` function that is not really meant to
 // be called from user code, and it expects a ` + "`testing.testDeps`" + ` implementation to be passed in,
 // which is internal, and cannot be imported.
@@ -224,6 +230,7 @@ func run() error {
 		HasTestMain: hasTestMain,
 	}
 
+	// TODO: It's unclear if the template will work with other versions of the Go toolchain.
 	tmpl, err := template.New("entrypoint").Parse(entrypointTemplate)
 	if err != nil {
 		return fmt.Errorf("parsing template: %w", err)
