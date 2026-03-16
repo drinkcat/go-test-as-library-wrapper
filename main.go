@@ -19,6 +19,7 @@ import (
 	"go/token"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"text/template"
 )
@@ -163,7 +164,13 @@ func findTests(dir string) (pkg string, tests []string, hasTestMain bool, err er
 			continue
 		}
 		pkg = pkgName
-		for _, file := range pkgAst.Files {
+		fileNames := make([]string, 0, len(pkgAst.Files))
+		for name := range pkgAst.Files {
+			fileNames = append(fileNames, name)
+		}
+		sort.Strings(fileNames)
+		for _, fileName := range fileNames {
+			file := pkgAst.Files[fileName]
 			for _, decl := range file.Decls {
 				fn, ok := decl.(*ast.FuncDecl)
 				if !ok || fn.Name == nil {
@@ -177,6 +184,7 @@ func findTests(dir string) (pkg string, tests []string, hasTestMain bool, err er
 				}
 			}
 		}
+		break
 	}
 
 	if pkg == "" {
