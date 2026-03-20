@@ -3,7 +3,7 @@
 // A more proper solution would require a Go toolchain change, see
 // https://github.com/golang/go/issues/77524 .
 //
-// To regenerate this file, run: go-test-as-library-wrapper .
+// To regenerate this file, run: go run github.com/drinkcat/go-test-as-library-wrapper@latest .
 //
 // To use this code, build tests as an archive with
 // CGO_ENABLED=1 go test -tags test_archive -buildmode=c-archive -c -o test-static.a
