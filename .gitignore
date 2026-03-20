@@ -2,13 +2,13 @@
 go-test-as-library-wrapper
 
 # Example build artifacts
-example/c-harness/*.o
-example/go-test-as-library-wrapper
-example/test-static.a
-example/test-static.h
-example/test-dynamic.so
-example/test-dynamic.h
-example/ctest-static
-example/ctest-dynamic
-example/*.log
-example/test
+test/example*/*.o
+test/example*/go-test-as-library-wrapper
+test/example*/test-static.a
+test/example*/test-static.h
+test/example**/test-dynamic.so
+test/example*/test-dynamic.h
+test/example*/ctest-static
+test/example*/ctest-dynamic
+test/example*/*.log
+test/example*/test

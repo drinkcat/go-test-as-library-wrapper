@@ -4,7 +4,7 @@ set -e -x
 
 go build
 
-cd example
+cd test/example
 rm -f test_as_library_entrypoint.go
-../go-test-as-library-wrapper .
-./build-and-test.sh
+../../go-test-as-library-wrapper .
+../build-and-test.sh .
