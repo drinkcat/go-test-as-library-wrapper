@@ -158,37 +158,43 @@ func findTests(dir string) (pkg string, tests []string, hasTestMain bool, err er
 		return "", nil, false, fmt.Errorf("parsing %s: %w", dir, err)
 	}
 
-	for pkgName, pkgAst := range pkgs {
-		// Skip external test packages (foo_test)
-		if strings.HasSuffix(pkgName, "_test") {
-			continue
-		}
-		pkg = pkgName
-		fileNames := make([]string, 0, len(pkgAst.Files))
-		for name := range pkgAst.Files {
-			fileNames = append(fileNames, name)
-		}
-		sort.Strings(fileNames)
-		for _, fileName := range fileNames {
-			file := pkgAst.Files[fileName]
-			for _, decl := range file.Decls {
-				fn, ok := decl.(*ast.FuncDecl)
-				if !ok || fn.Name == nil {
-					continue
-				}
-				name := fn.Name.Name
-				if name == "TestMain" {
-					hasTestMain = true
-				} else if isTestFunc(name, fn) {
-					tests = append(tests, name)
+	// Prefer the internal test package (foo) over the external one (foo_test).
+	// If only an external test package exists, use that.
+	for _, external := range []bool{false, true} {
+		for pkgName, pkgAst := range pkgs {
+			if strings.HasSuffix(pkgName, "_test") != external {
+				continue
+			}
+			pkg = pkgName
+			fileNames := make([]string, 0, len(pkgAst.Files))
+			for name := range pkgAst.Files {
+				fileNames = append(fileNames, name)
+			}
+			sort.Strings(fileNames)
+			for _, fileName := range fileNames {
+				file := pkgAst.Files[fileName]
+				for _, decl := range file.Decls {
+					fn, ok := decl.(*ast.FuncDecl)
+					if !ok || fn.Name == nil {
+						continue
+					}
+					name := fn.Name.Name
+					if name == "TestMain" {
+						hasTestMain = true
+					} else if isTestFunc(name, fn) {
+						tests = append(tests, name)
+					}
 				}
 			}
+			break
 		}
-		break
+		if pkg != "" {
+			break
+		}
 	}
 
 	if pkg == "" {
-		return "", nil, false, fmt.Errorf("no non-external test package found in %s", dir)
+		return "", nil, false, fmt.Errorf("no test package found in %s", dir)
 	}
 	return pkg, tests, hasTestMain, nil
 }
